@@ -171,4 +171,10 @@ cython_debug/
 .pypirc
 
 # Postgres Data
-ny_taxi_postgres_data
+postgres_data
+
+# CSV files
+*.csv
+
+# ipynb files
+*.ipynb
