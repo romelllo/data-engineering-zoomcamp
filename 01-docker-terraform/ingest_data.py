@@ -38,8 +38,8 @@ def ingest_data(params: argparse.Namespace) -> None:
         
         # Handle first chunk
         df = next(df_iter)
-        df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
-        df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
+        df['lpep_pickup_datetime'] = pd.to_datetime(df['lpep_pickup_datetime'])
+        df['lpep_dropoff_datetime'] = pd.to_datetime(df['lpep_dropoff_datetime'])
         
         # Create table schema
         pd.io.sql.get_schema(df, table_name, con=engine)
@@ -56,8 +56,8 @@ def ingest_data(params: argparse.Namespace) -> None:
                 t_start = time()
                 
                 df = next(df_iter)
-                df['tpep_pickup_datetime'] = pd.to_datetime(df['tpep_pickup_datetime'])
-                df['tpep_dropoff_datetime'] = pd.to_datetime(df['tpep_dropoff_datetime'])
+                df['lpep_pickup_datetime'] = pd.to_datetime(df['lpep_pickup_datetime'])
+                df['lpep_dropoff_datetime'] = pd.to_datetime(df['lpep_dropoff_datetime'])
                 
                 df.to_sql(table_name, engine, if_exists='append', index=False)
                 

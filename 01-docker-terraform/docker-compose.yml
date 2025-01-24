@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - "./postgres_data:/var/lib/postgresql/data:rw"
+      - "../postgres_data:/var/lib/postgresql/data:rw"
     ports:
       - "5431:5432"
     networks:
@@ -27,7 +27,7 @@ services:
     depends_on:
       - pgdatabase
     volumes:
-      - "./data:/data:ro"
+      - "../data:/data:ro"
     networks:
       - pg-network
     command: [
