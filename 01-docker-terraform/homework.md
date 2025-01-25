@@ -151,7 +151,6 @@ WHERE
     AND trip_distance > 10;
 ```
 
-
 ## Question 4. Longest trip for each day
 
 Which was the pick up day with the longest trip distance?
@@ -162,8 +161,16 @@ Tip: For every day, we only care about one single trip with the longest distance
 - 2019-10-11
 - 2019-10-24
 - 2019-10-26
-- 2019-10-31
+- 2019-10-31 -- Correct
 
+```sql
+SELECT CAST(lpep_pickup_datetime as DATE)
+FROM yellow_taxi_trips ytt
+WHERE trip_distance = (
+    SELECT MAX(trip_distance)
+    FROM yellow_taxi_trips
+);
+```
 
 ## Question 5. Three biggest pickup zones
 
@@ -172,11 +179,28 @@ Which were the top pickup locations with over 13,000 in
 
 Consider only `lpep_pickup_datetime` when filtering by date.
  
-- East Harlem North, East Harlem South, Morningside Heights
+- East Harlem North, East Harlem South, Morningside Heights -- Correct
 - East Harlem North, Morningside Heights
 - Morningside Heights, Astoria Park, East Harlem South
 - Bedford, East Harlem North, Astoria Park
 
+```sql
+SELECT 
+    tz."Zone" AS pickup_location,
+    SUM(ytt.total_amount) AS total_amount_sum
+FROM 
+    yellow_taxi_trips ytt
+LEFT JOIN 
+    taxi_zone tz ON ytt."PULocationID" = tz."LocationID"
+WHERE 
+    CAST(ytt.lpep_pickup_datetime AS DATE) = '2019-10-18'
+GROUP BY 
+    tz."Zone"
+HAVING 
+    SUM(ytt.total_amount) > 13000
+ORDER BY 
+    total_amount_sum DESC;
+```
 
 ## Question 6. Largest tip
 
@@ -189,10 +213,28 @@ Note: it's `tip` , not `trip`
 We need the name of the zone, not the ID.
 
 - Yorkville West
-- JFK Airport
+- JFK Airport -- Correct
 - East Harlem North
 - East Harlem South
 
+```sql
+SELECT 
+    tz_dropoff."Zone" AS dropoff_zone,
+    ytt.tip_amount AS tip
+FROM 
+    yellow_taxi_trips ytt
+LEFT JOIN 
+    taxi_zone tz_pickup ON ytt."PULocationID" = tz_pickup."LocationID"
+LEFT JOIN 
+    taxi_zone tz_dropoff ON ytt."DOLocationID" = tz_dropoff."LocationID"
+WHERE 
+    CAST(ytt.lpep_pickup_datetime AS DATE) >= '2019-10-01'
+    AND CAST(ytt.lpep_pickup_datetime AS DATE) < '2019-11-01'
+    AND tz_pickup."Zone" = 'East Harlem North'
+ORDER BY 
+    tip DESC
+LIMIT 1;
+```
 
 ## Terraform
 
@@ -216,7 +258,7 @@ Answers:
 - terraform import, terraform apply -y, terraform destroy
 - teraform init, terraform plan -auto-apply, terraform rm
 - terraform init, terraform run -auto-approve, terraform destroy
-- terraform init, terraform apply -auto-approve, terraform destroy
+- terraform init, terraform apply -auto-approve, terraform destroy -- Correct
 - terraform import, terraform apply -y, terraform rm
 
 

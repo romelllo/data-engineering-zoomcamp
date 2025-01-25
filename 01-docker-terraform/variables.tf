@@ -1,6 +1,6 @@
 variable "credentials" {
   description = "Service Account Credentials"
-  default     = "./keys/service-account.json"
+  default     = "../keys/service-account.json"
 }
 
 variable "project_id" {
