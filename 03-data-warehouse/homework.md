@@ -21,8 +21,10 @@ What is the **estimated amount** of data that will be read when this query is ex
 - 2.14 GB for the External Table and 0MB for the Materialized Table
 - 0 MB for the External Table and 0MB for the Materialized Table
 
-Bytes processed 155.12 MB -- External Table
-Bytes processed 155.12 MB  -- Materialized Table
+This is because BigQuery:
+  - Knows materialized table size before execution
+  - Cannot estimate external table size until scan
+  - Shows 0 MB estimate for external tables initially
 
 ```sql
 -- Count the distinct number of PULocationIDs for external table --
@@ -39,7 +41,7 @@ Write a query to retrieve the PULocationID from the table (not the external tabl
 - BigQuery automatically caches the first queried column, so adding a second column increases processing time but does not affect the estimated bytes scanned.
 - When selecting multiple columns, BigQuery performs an implicit join operation between them, increasing the estimated bytes processed
 
-155.12 MB -- PULocationID
+155.12 MB -- PULocationID  
 310.24 MB -- PULocationID, DOLocationID
 
 ```sql
@@ -91,7 +93,7 @@ Choose the answer which most closely matches.</br>
 - 5.87 MB for non-partitioned table and 0 MB for the partitioned table
 - 310.31 MB for non-partitioned table and 285.64 MB for the partitioned table
 
-310.24 MB -- non-partitioned table
+310.24 MB -- non-partitioned table  
 26.84 MB -- partitioned table
 
 ```sql
