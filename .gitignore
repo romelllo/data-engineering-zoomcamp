@@ -176,8 +176,8 @@ postgres_data
 # CSV files
 *.csv
 
-# ipynb files
-*.ipynb
+# # ipynb files
+# *.ipynb
 
 # Keys
 keys
@@ -222,3 +222,6 @@ terraform.rc
 
 # Kestra keys
 04_gcp_kv.yaml
+
+# duckdb
+*.duckdb
